@@ -14,8 +14,8 @@
 **테마**: "전통과 현대의 조화"
 
 - 여백을 살린 미니멀리스트 레이아웃 (한국 미학)
-- 전통 오방색을 포인트로 활용: 빨강, 파랑, 초록, 노랑
-- 깔끔한 갤러리 스타일 프레젠테이션
+- 전통 오방색을 포인트로 활용: 빨강, 파랑, 노랑, 흰색, 검정 (회색 배경에 표시)
+- 깔끗한 갤러리 스타일 프레젠테이션
 - 완전 반응형 디자인 (모바일/태블릿/데스크톱)
 - 인터랙티브 작품 라이트박스 갤러리
 - 글로벌 도달을 위한 영어 콘텐츠
@@ -24,30 +24,40 @@
 
 ## 🛠 기술 스택
 
-- **프레임워크**: React 18+
-- **스타일링**: Tailwind CSS
+- **프레임워크**: React 18.2.0
+- **스타일링**: Tailwind CSS 3.3.5
 - **아이콘**: Lucide React
+- **이미지 포맷**: WebP (85% 용량 절감)
 - **언어**: 영어 단일 언어
-- **배포**: Vercel, Netlify 등 정적 호스팅 가능
+- **호스팅**: Vercel
+- **저장소**: GitHub (https://github.com/jjh622c/jang_webpage)
 
 ---
 
 ## 📁 파일 구조
 
 ```
-jang-inyoung-portfolio/
+jang_webpage/
 ├── src/
-│   ├── App.jsx (또는 jang-inyoung-portfolio.jsx)
-│   └── index.css
+│   ├── App.jsx          # 메인 React 컴포넌트
+│   ├── index.js         # React 진입점
+│   └── index.css        # Tailwind CSS 포함
 ├── public/
+│   ├── index.html       # HTML 템플릿
 │   └── images/
-│       ├── artworks/
-│       │   ├── longevity-01.jpg
-│       │   ├── longevity-02.jpg
-│       │   └── ... (실제 작품 이미지를 여기에 추가)
-│       └── hero-image.jpg
-├── package.json
-└── README.md
+│       ├── artworks/    # 작품 이미지 (WebP)
+│       │   ├── artwork-01.webp
+│       │   ├── artwork-02.webp
+│       │   └── ... (artwork-06.webp까지)
+│       └── hero.webp    # 히어로 섹션 이미지
+├── build/               # 빌드 결과물 (배포용)
+├── .gitignore           # Git 무시 파일 (카탈로그 폴더 포함)
+├── .vercelignore        # Vercel 무시 파일
+├── package.json         # 의존성 관리
+├── tailwind.config.js   # Tailwind 설정
+├── postcss.config.js    # PostCSS 설정
+├── vercel.json          # Vercel 배포 설정
+└── CLAUDE.md            # 프로젝트 문서
 ```
 
 ---
@@ -162,67 +172,90 @@ npm start
 
 ---
 
-## 🖼️ 실제 이미지 추가하기
+## 🖼️ 이미지 최적화 완료
 
-### 현재 상태: 플레이스홀더 이미지
-모든 작품에 이모지 플레이스홀더(🖼️) 사용 중
+### ✅ 현재 상태: WebP 포맷으로 최적화 완료
 
-### 실제 이미지 추가 방법:
+**적용된 이미지:**
+- 히어로 이미지: `hero.webp` (432KB → 270KB, 37% 감소)
+- 작품 이미지 6개: `artwork-01.webp` ~ `artwork-06.webp`
+- 전체 용량: 37MB → 5.5MB (85% 감소)
 
-**1. 이미지를 `/public/images/artworks/` 폴더에 배치**
-   ```
-   longevity-01.jpg
-   longevity-02.jpg
-   longevity-03.jpg
-   ... 등
-   ```
+### 이미지 최적화 방법 (참고용)
 
-**2. App.jsx의 artworks 배열 업데이트:**
+**Sharp 라이브러리를 사용한 자동 변환:**
 
-```javascript
-const artworks = [
-  {
-    id: 1,
-    title: 'Longevity and Prosperity I',
-    year: '2023',
-    medium: 'Mulberry paper, Oil, Acrylic',
-    size: '162 x 130 cm',
-    description: 'Modern reinterpretation...',
-    color: '#E63946',
-    image: '/images/artworks/longevity-01.jpg' // 이 줄 추가
-  },
-  // ... 모든 작품에 반복
-];
+```bash
+npm install sharp
 ```
 
-**3. 플레이스홀더를 img 태그로 교체:**
+```javascript
+// optimize-images.js
+const sharp = require('sharp');
+const fs = require('fs');
+const path = require('path');
 
-```jsx
-// 이전 (플레이스홀더):
-<div className="text-6xl mb-4">🖼️</div>
+async function optimizeImages() {
+  const inputDir = './public/images';
+  const files = ['hero.jpg', ...Array.from({length: 6}, (_, i) =>
+    `artworks/artwork-${String(i+1).padStart(2, '0')}.jpg`)];
 
-// 이후 (실제 이미지):
-<img 
-  src={artwork.image} 
-  alt={artwork.title}
-  className="w-full h-full object-cover"
-/>
+  for (const file of files) {
+    const inputPath = path.join(inputDir, file);
+    const outputPath = inputPath.replace('.jpg', '.webp');
+
+    await sharp(inputPath)
+      .webp({ quality: 80 })
+      .toFile(outputPath);
+
+    console.log(`✓ ${file} → WebP`);
+  }
+}
+
+optimizeImages();
+```
+
+### 추가 이미지 업데이트 방법
+
+**새 이미지를 추가하려면:**
+
+1. 원본 이미지를 `/public/images/artworks/`에 추가
+2. Sharp로 WebP 변환 또는 온라인 도구 사용 (https://squoosh.app/)
+3. `src/App.jsx`의 artworks 배열에 추가:
+
+```javascript
+{
+  id: 7,
+  title: 'New Artwork Title',
+  year: '2024',
+  medium: 'Mulberry paper, Oil, Acrylic',
+  size: '130 x 162 cm',
+  description: 'Description here...',
+  color: '#E63946',
+  image: '/images/artworks/artwork-07.webp'
+}
 ```
 
 ---
 
 ## 🎨 색상 구성
 
-**주요 색상** (전통 오방색):
-- 빨강: `#E63946` - 에너지, 열정
-- 파랑: `#457B9D` - 지혜, 깊이
-- 초록: `#2A9D8F` - 자연, 성장
-- 노랑: `#F4A261` - 번영, 빛
+**주요 색상** (전통 오방색 - Korean Five Elements Colors):
+- 🔴 빨강 (적색): `#E63946` - 에너지, 열정 (Fire)
+- 🔵 파랑 (청색): `#457B9D` - 지혜, 깊이 (Wood)
+- 🟡 노랑 (황색): `#F4A261` - 번영, 빛 (Earth)
+- ⚪ 흰색 (백색): `#FFFFFF` - 순수, 정의 (Metal)
+- ⚫ 검정 (흑색): `#000000` - 지혜, 신비 (Water)
+
+**오방색 표시:**
+- 회색 배경 (`#F3F4F6`)에 5가지 색상 바 형태로 표시
+- 흰색 바에는 테두리 (`border-gray-200`) 추가로 가시성 확보
 
 **중립 색상**:
 - 배경: 흰색 `#FFFFFF`
 - 텍스트: 회색-900 `#111827`
 - 액센트: 회색-50 `#F9FAFB` (섹션 구분용)
+- 오방색 컨테이너 배경: 회색-100 `#F3F4F6`
 
 ---
 
@@ -254,101 +287,140 @@ const artworks = [
 
 ---
 
-## 🚢 배포 옵션
+## 🚢 배포 (Vercel)
 
-### 옵션 1: Vercel (추천)
+### ✅ 현재 배포 상태
+
+**프로덕션 URL:** https://jangwebpage-by6ymigis-jjh622cs-projects.vercel.app
+
+**GitHub 저장소:** https://github.com/jjh622c/jang_webpage
+
+**배포 플랫폼:** Vercel
+
+### 배포 설정 확인사항
+
+**중요: Vercel Deployment Protection 설정**
+
+Vercel에서 외부 접속 시 이메일을 요구하는 경우, 다음 설정을 확인하세요:
+
+1. https://vercel.com/jjh622cs-projects/jang_webpage/settings 접속
+2. 왼쪽 메뉴 "Deployment Protection" 클릭
+3. 다음 옵션을 비활성화:
+   - ❌ Vercel Authentication
+   - ❌ Password Protection
+   - ❌ Trusted IPs
+4. "Public Access" 활성화 확인
+5. 저장 후 재배포
+
+### 로컬에서 Vercel 배포
 
 ```bash
-npm install -g vercel
-vercel login
-vercel
+# Vercel CLI로 배포
+npx vercel --prod --yes
+
+# 또는 GitHub에 push하면 자동 배포
+git add .
+git commit -m "Update content"
+git push origin main
 ```
 
-### 옵션 2: Netlify
+### 배포 설정 파일
 
-```bash
-npm run build
-# netlify.com에 'build' 폴더를 드래그 앤 드롭
-```
-
-### 옵션 3: GitHub Pages
-
-```bash
-npm install gh-pages --save-dev
-```
-
-`package.json`에 추가:
+**vercel.json:**
 ```json
-"homepage": "https://yourusername.github.io/jang-inyoung-portfolio",
-"scripts": {
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d build"
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "build" }
+    }
+  ],
+  "routes": [
+    { "src": "/static/(.*)", "dest": "/static/$1" },
+    { "src": "/images/(.*)", "dest": "/images/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
 ```
 
-```bash
-npm run deploy
+**package.json scripts:**
+```json
+{
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "vercel-build": "react-scripts build"
+  }
+}
 ```
 
 ---
 
-## 📝 다음 단계 (우선순위별)
+## 📝 완료된 작업 및 다음 단계
 
-### 🔴 필수 (반드시 해야 함)
+### ✅ 완료된 작업
 
-**1. 실제 작품 이미지 추가**
-   - 모든 이모지 플레이스홀더를 실제 사진으로 교체
-   - 이미지 최적화 (권장: 1200x1500px, 각 500KB 이하)
-   - TinyPNG 같은 도구로 압축
+**1. 이미지 최적화 완료**
+   - ✅ 모든 작품 이미지 WebP 변환 (85% 용량 절감)
+   - ✅ 히어로 이미지 적용 (릴리프 기법 강조 작품)
+   - ✅ 6개 작품 이미지 배치 완료
 
-**2. 히어로 이미지 추가**
-   - 히어로 섹션용 대표 작품
-   - 고화질이며 대표성 있는 작품
+**2. 디자인 개선 완료**
+   - ✅ 오방색 5가지 모두 표시 (회색 배경 적용)
+   - ✅ 전통과 현대의 조화 콘셉트 구현
+   - ✅ 완전 반응형 디자인
 
-**3. 연락처 정보 확인**
-   - 이메일과 전화번호 재확인
-   - 이메일 링크 작동 테스트
+**3. 배포 완료**
+   - ✅ GitHub 저장소 생성 및 push
+   - ✅ Vercel 프로덕션 배포
+   - ✅ Git 히스토리 정리 (대용량 파일 제거)
 
-### 🟡 중요 (하면 좋음)
+### 🟡 권장 개선사항
 
-**4. 전시 이력 확장**
+**1. Vercel Deployment Protection 비활성화**
+   - 현재 외부 접속 시 이메일 요구됨
+   - Settings → Deployment Protection에서 Public Access 활성화
+
+**2. 전시 이력 확장**
    - 전시 이력 추가 (현재 5개)
    - 국제 전시 포함
 
-**5. SEO 최적화**
+**3. SEO 최적화**
    - `index.html`에 메타 태그 추가
    - 소셜 공유용 Open Graph 태그
    - sitemap.xml 생성
 
-**6. Google Analytics**
+**4. Google Analytics**
    - 방문자 행동 추적
    - 관객 인구통계 파악
 
-**7. 연락 폼**
+**5. 연락 폼**
    - 작동하는 연락 폼 추가 (EmailJS 등 사용)
    - 단순 링크를 폼 제출로 교체
 
 ### 🟢 선택 사항 (있으면 더 좋음)
 
-**8. 작가 노트 페이지**
+**6. 작가 노트 페이지**
    - 예술 철학 전용 페이지
    - 작업 과정 문서화
 
-**9. 언론/미디어 섹션**
+**7. 언론/미디어 섹션**
    - 뉴스 기사, 인터뷰
    - 프레스 킷 다운로드
 
-**10. 다국어 지원**
-    - 필요시 한국어 옵션 추가
-    - i18n 라이브러리 사용
+**8. 다국어 지원**
+   - 필요시 한국어 옵션 추가
+   - i18n 라이브러리 사용
 
-**11. 블로그/소식 섹션**
-    - 예정된 전시
-    - 최근 작품
+**9. 블로그/소식 섹션**
+   - 예정된 전시
+   - 최근 작품
 
-**12. 온라인 스토어 연동**
-    - 프린트나 원작 판매
-    - Shopify 등과 연동
+**10. 온라인 스토어 연동**
+   - 프린트나 원작 판매
+   - Shopify 등과 연동
 
 ---
 
@@ -442,6 +514,21 @@ className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8"
 
 ---
 
-**최종 업데이트**: 2025-01-XX  
-**제작**: Claude AI Assistant  
+---
+
+## 🔗 주요 링크
+
+**프로덕션 웹사이트:** https://jangwebpage-by6ymigis-jjh622cs-projects.vercel.app
+
+**GitHub 저장소:** https://github.com/jjh622c/jang_webpage
+
+**Vercel 대시보드:** https://vercel.com/jjh622cs-projects/jang_webpage
+
+**로컬 개발 서버:** http://localhost:3000
+
+---
+
+**최종 업데이트**: 2025-10-09
+**제작**: Claude AI Assistant
 **프로젝트**: 장인영 화백 포트폴리오 웹사이트
+**버전**: 1.0.0 (배포 완료)
