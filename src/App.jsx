@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronLeft, ChevronRight, Mail, Phone, MapPin } from 'lucide-react';
 
 export default function JangInyoungPortfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [aboutImageIndex, setAboutImageIndex] = useState(0);
+  const [showAllArtworks, setShowAllArtworks] = useState(false);
+  const [heroSlideIndex, setHeroSlideIndex] = useState(0);
 
   // Artworks data with real images
   const artworks = [
@@ -91,6 +94,38 @@ export default function JangInyoungPortfolio() {
     { name: 'Deer', meaning: 'Wealth' },
   ];
 
+  // About section images (placeholder - add actual images to /public/images/about/)
+  const aboutImages = [
+    { url: '/images/about/photo-1.jpg', caption: 'Exhibition Opening' },
+    { url: '/images/about/photo-2.jpg', caption: 'Awards Ceremony' },
+    { url: '/images/about/photo-3.jpg', caption: 'Press Conference' },
+  ];
+
+  // News & Updates data
+  const newsUpdates = [
+    {
+      id: 1,
+      date: '2024.03.15',
+      title: 'Upcoming Exhibition at Seoul Art Center',
+      excerpt: 'New collection featuring contemporary interpretations of traditional Korean longevity symbols...',
+      category: 'Exhibition'
+    },
+    {
+      id: 2,
+      date: '2024.02.28',
+      title: 'Interview with Art Magazine Korea',
+      excerpt: 'Discussing the intersection of traditional and modern art in Korean contemporary scene...',
+      category: 'Press'
+    },
+    {
+      id: 3,
+      date: '2024.01.10',
+      title: 'Award Recognition for Contribution to Korean Art',
+      excerpt: 'Honored for lifetime achievement in promoting Korean traditional aesthetics globally...',
+      category: 'Award'
+    },
+  ];
+
   const openLightbox = (index) => {
     setCurrentImageIndex(index);
     setSelectedImage(artworks[index]);
@@ -112,6 +147,22 @@ export default function JangInyoungPortfolio() {
     setSelectedImage(artworks[newIndex]);
   };
 
+  const nextAboutImage = () => {
+    setAboutImageIndex((prev) => (prev + 1) % aboutImages.length);
+  };
+
+  const prevAboutImage = () => {
+    setAboutImageIndex((prev) => (prev - 1 + aboutImages.length) % aboutImages.length);
+  };
+
+  // Auto-slide effect for hero section
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroSlideIndex((prev) => (prev + 1) % artworks.length);
+    }, 5000); // Change slide every 5 seconds
+    return () => clearInterval(interval);
+  }, [artworks.length]);
+
   return (
     <div className="min-h-screen bg-white text-gray-900 font-serif">
       {/* Navigation */}
@@ -124,6 +175,7 @@ export default function JangInyoungPortfolio() {
             <a href="#about" className="hover:text-red-600 transition-colors text-sm tracking-wide">About</a>
             <a href="#gallery" className="hover:text-red-600 transition-colors text-sm tracking-wide">Artworks</a>
             <a href="#exhibitions" className="hover:text-red-600 transition-colors text-sm tracking-wide">Exhibitions</a>
+            <a href="#news" className="hover:text-red-600 transition-colors text-sm tracking-wide">News</a>
             <a href="#philosophy" className="hover:text-red-600 transition-colors text-sm tracking-wide">Philosophy</a>
             <a href="#contact" className="hover:text-red-600 transition-colors text-sm tracking-wide">Contact</a>
           </div>
@@ -144,6 +196,7 @@ export default function JangInyoungPortfolio() {
               <a href="#about" className="block hover:text-red-600 transition-colors" onClick={() => setIsMenuOpen(false)}>About</a>
               <a href="#gallery" className="block hover:text-red-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Artworks</a>
               <a href="#exhibitions" className="block hover:text-red-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Exhibitions</a>
+              <a href="#news" className="block hover:text-red-600 transition-colors" onClick={() => setIsMenuOpen(false)}>News</a>
               <a href="#philosophy" className="block hover:text-red-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Philosophy</a>
               <a href="#contact" className="block hover:text-red-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Contact</a>
             </div>
@@ -182,6 +235,50 @@ export default function JangInyoungPortfolio() {
         </div>
       </section>
 
+      {/* Featured Artworks Slide Section */}
+      <section className="relative h-[600px] overflow-hidden bg-gray-900">
+        {/* Background Slides */}
+        <div className="absolute inset-0">
+          {artworks.map((artwork, index) => (
+            <div
+              key={artwork.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                index === heroSlideIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <img
+                src={artwork.image}
+                alt={artwork.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            </div>
+          ))}
+        </div>
+
+        {/* Content Overlay */}
+        <div className="relative h-full flex items-end justify-center pb-20 px-6">
+          <div className="text-center text-white max-w-4xl">
+            <h3 className="text-5xl font-bold mb-4">{artworks[heroSlideIndex].title}</h3>
+            <p className="text-xl mb-2">{artworks[heroSlideIndex].year} | {artworks[heroSlideIndex].size}</p>
+            <p className="text-lg text-gray-300 mb-8">{artworks[heroSlideIndex].description}</p>
+
+            {/* Slide Indicators */}
+            <div className="flex justify-center space-x-3">
+              {artworks.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setHeroSlideIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === heroSlideIndex ? 'bg-white w-8' : 'bg-white/50'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section id="about" className="py-20 px-6 bg-gray-50">
         <div className="max-w-5xl mx-auto">
@@ -215,6 +312,49 @@ export default function JangInyoungPortfolio() {
               <div className="text-sm text-gray-600">Years Active</div>
             </div>
           </div>
+
+          {/* Image Carousel */}
+          <div className="mt-16">
+            <h3 className="text-2xl font-bold mb-6 text-center">Gallery</h3>
+            <div className="relative max-w-2xl mx-auto">
+              <div className="aspect-video rounded-lg shadow-xl overflow-hidden bg-gray-100">
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <p className="text-lg mb-2">📸</p>
+                    <p className="text-sm">Add images to /public/images/about/</p>
+                    <p className="text-xs text-gray-500 mt-2">{aboutImages[aboutImageIndex].caption}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Navigation Buttons */}
+              <button
+                onClick={prevAboutImage}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all"
+              >
+                <ChevronLeft size={24} className="text-gray-800" />
+              </button>
+              <button
+                onClick={nextAboutImage}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all"
+              >
+                <ChevronRight size={24} className="text-gray-800" />
+              </button>
+
+              {/* Dots Indicator */}
+              <div className="flex justify-center mt-4 space-x-2">
+                {aboutImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setAboutImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === aboutImageIndex ? 'bg-red-600 w-6' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -225,11 +365,11 @@ export default function JangInyoungPortfolio() {
           <p className="text-center text-gray-600 mb-12">Click to view artwork details</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artworks.map((artwork, index) => (
+            {(showAllArtworks ? artworks : artworks.slice(0, 3)).map((artwork, index) => (
               <div
                 key={artwork.id}
                 className="group cursor-pointer"
-                onClick={() => openLightbox(index)}
+                onClick={() => openLightbox(showAllArtworks ? index : artworks.findIndex(a => a.id === artwork.id))}
               >
                 <div className="aspect-[4/5] rounded-lg shadow-lg overflow-hidden mb-4 transition-transform duration-300 group-hover:scale-105">
                   <img
@@ -246,6 +386,31 @@ export default function JangInyoungPortfolio() {
               </div>
             ))}
           </div>
+
+          {!showAllArtworks && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => setShowAllArtworks(true)}
+                className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors shadow-lg hover:shadow-xl"
+              >
+                View All Artworks →
+              </button>
+            </div>
+          )}
+
+          {showAllArtworks && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => {
+                  setShowAllArtworks(false);
+                  document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors shadow-lg hover:shadow-xl"
+              >
+                ← Show Less
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -311,8 +476,42 @@ export default function JangInyoungPortfolio() {
         </div>
       </section>
 
+      {/* News & Updates Section */}
+      <section id="news" className="py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold mb-4 text-center">News & Updates</h2>
+          <p className="text-center text-gray-600 mb-12">Latest exhibitions, press coverage, and announcements</p>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {newsUpdates.map((news) => (
+              <div key={news.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-semibold px-3 py-1 bg-red-100 text-red-600 rounded-full">
+                      {news.category}
+                    </span>
+                    <span className="text-xs text-gray-500">{news.date}</span>
+                  </div>
+                  <h3 className="font-bold text-xl mb-3 leading-tight">{news.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{news.excerpt}</p>
+                  <button className="mt-4 text-red-600 hover:text-red-700 font-semibold text-sm flex items-center">
+                    Read more →
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <button className="px-8 py-3 border-2 border-gray-300 hover:border-red-600 hover:text-red-600 rounded-lg transition-colors">
+              View All News
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Ten Symbols Philosophy */}
-      <section id="philosophy" className="py-20 px-6">
+      <section id="philosophy" className="py-20 px-6 bg-gradient-to-b from-gray-50 via-white to-gray-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold mb-4 text-center">Ten Symbols of Longevity</h2>
           <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto text-lg">
@@ -321,12 +520,15 @@ export default function JangInyoungPortfolio() {
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {tenSymbols.map((symbol, index) => (
-              <div key={index} className="text-center p-6 rounded-lg bg-gradient-to-br from-gray-50 to-white shadow-md hover:shadow-lg transition-shadow">
-                <div className="text-4xl mb-3">
-                  {['☀️', '⛰️', '💧', '🪨', '☁️', '🌲', '🌿', '🐢', '🦢', '🦌'][index]}
+              <div key={index} className="relative group">
+                <div className="text-center p-8 rounded-lg bg-white border-2 border-gray-200 hover:border-red-600 transition-all duration-300 shadow-lg hover:shadow-xl h-full">
+                  <div className="text-6xl font-serif mb-4 text-gray-800 tracking-wider">
+                    {['日', '山', '水', '石', '雲', '松', '草', '龜', '鶴', '鹿'][index]}
+                  </div>
+                  <div className="font-bold text-lg mb-2 tracking-wide">{symbol.name}</div>
+                  <div className="text-sm text-gray-600 leading-relaxed">{symbol.meaning}</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-red-50/20 to-yellow-50/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 </div>
-                <div className="font-bold text-lg mb-1">{symbol.name}</div>
-                <div className="text-sm text-gray-600">{symbol.meaning}</div>
               </div>
             ))}
           </div>
@@ -357,8 +559,8 @@ export default function JangInyoungPortfolio() {
             <div className="text-center p-6 bg-white rounded-lg shadow">
               <Phone className="mx-auto mb-4 text-green-600" size={32} />
               <h3 className="font-bold mb-2">Phone</h3>
-              <a href="tel:+82-10-3562-3225" className="text-sm text-green-600 hover:underline">
-                +82-10-3562-3225
+              <a href="tel:1577-9219" className="text-sm text-green-600 hover:underline">
+                1577-9219
               </a>
             </div>
           </div>
