@@ -9,67 +9,127 @@ export default function JangInyoungPortfolio() {
   const [showAllArtworks, setShowAllArtworks] = useState(false);
   const [heroSlideIndex, setHeroSlideIndex] = useState(0);
 
-  // Artworks data with real images
+  // Artworks data - Curated collection from artist's best works
   const artworks = [
     {
       id: 1,
-      title: 'Longevity and Prosperity I',
-      year: '2009',
-      medium: 'Mulberry paper, Oil, Acrylic',
-      size: '162 x 130 cm',
-      description: 'Modern reinterpretation of traditional longevity symbols with sun and crane',
+      title: 'Geometric Ten Longevity Symbols',
+      year: '2013',
+      medium: 'Tin powder (주석가루), Canvas on Acrylic',
+      size: '116.8 × 90.9 cm (50F)',
+      description: 'Vibrant abstract interpretation of traditional longevity symbols with signature relief texture technique showcasing mountains, sun, and geometric patterns',
       color: '#E63946',
-      image: '/images/artworks/artwork-01.webp'
+      image: '/images/artworks/artwork-new-01.webp'
     },
     {
       id: 2,
-      title: 'Longevity and Prosperity II',
-      year: '2009',
-      medium: 'Mulberry paper, Oil, Acrylic',
-      size: '162 x 130 cm',
-      description: 'Harmonious meeting of pine tree and deer',
-      color: '#2A9D8F',
-      image: '/images/artworks/artwork-02.webp'
+      title: 'Five Peaks - Ten Longevity Symbols',
+      year: '2023',
+      medium: 'Canvas on Acrylic',
+      size: '53.0 × 45.5 cm (10F)',
+      description: 'Expressive brushwork depicting the traditional Korean royal symbol of five peaks (오봉) with vibrant colors and modern interpretation',
+      color: '#457B9D',
+      image: '/images/artworks/artwork-new-02.webp'
     },
     {
       id: 3,
-      title: 'Longevity and Prosperity III',
-      year: '2009',
-      medium: 'Mulberry paper, Oil, Acrylic',
-      size: '162 x 130 cm',
-      description: 'Eternal vitality of water and turtle',
-      color: '#457B9D',
-      image: '/images/artworks/artwork-03.webp'
+      title: 'Auspicious Energy (瑞氣)',
+      year: '2010',
+      medium: 'Panel, Mulberry paper, Acrylic',
+      size: '90.9 × 72.7 cm (30F)',
+      description: 'Exceptional relief texture work symbolizing auspicious energy with sun, clouds, and mountains in bold geometric composition',
+      color: '#F4A261',
+      image: '/images/artworks/artwork-new-03.webp'
     },
     {
       id: 4,
-      title: 'Longevity and Prosperity IV',
-      year: '2009',
-      medium: 'Mulberry paper, Oil, Acrylic',
-      size: '162 x 130 cm',
-      description: 'Rock and cloud, symbols of eternity',
-      color: '#6B4E71',
-      image: '/images/artworks/artwork-04.webp'
+      title: 'Geometric Longevity Symbols',
+      year: '2013',
+      medium: 'Canvas on Acrylic',
+      size: '90.9 × 72.7 cm (30F)',
+      description: 'Abstract geometric patterns with traditional symbols rendered in vibrant modern palette showing water, mountains, and natural elements',
+      color: '#2A9D8F',
+      image: '/images/artworks/artwork-new-04.webp'
     },
     {
       id: 5,
-      title: 'Longevity and Prosperity V',
-      year: '2009',
-      medium: 'Mulberry paper, Oil, Acrylic',
-      size: '162 x 130 cm',
-      description: 'Mystical harmony of herb of eternal youth and mountain',
+      title: 'Dreams Come True',
+      year: '2020',
+      medium: 'Panel, Mulberry paper, Acrylic',
+      size: '53.0 × 45.5 cm (10F)',
+      description: 'Celebratory work depicting mountains, sun, and people gathering in celebration - symbolizing aspirations and hope fulfilled',
       color: '#F4A261',
-      image: '/images/artworks/artwork-05.webp'
+      image: '/images/artworks/artwork-new-05.webp'
     },
     {
       id: 6,
-      title: 'Longevity and Prosperity VI',
-      year: '2009',
-      medium: 'Mulberry paper, Oil, Acrylic',
-      size: '162 x 130 cm',
-      description: 'Complete harmony of ten symbols of longevity',
+      title: 'Hometown Village',
+      year: '2020',
+      medium: 'Canvas on Acrylic',
+      size: '116.8 × 90.9 cm (50F)',
+      description: 'Pastoral Korean village landscape with majestic mountains, demonstrating versatility beyond abstract work with vibrant expressionist style',
+      color: '#457B9D',
+      image: '/images/artworks/artwork-new-06.webp'
+    },
+    {
+      id: 7,
+      title: 'Longevity Story',
+      year: '2016',
+      medium: 'Tin powder (주석가루), Canvas on Acrylic',
+      size: '90.9 × 72.7 cm (30F)',
+      description: 'Textured geometric composition with sunset/sunrise, mountains, and symbolic elements in warm color palette',
       color: '#E63946',
-      image: '/images/artworks/artwork-06.webp'
+      image: '/images/artworks/artwork-new-07.webp'
+    },
+    {
+      id: 8,
+      title: 'Longevity and Prosperity',
+      year: '2023',
+      medium: 'Panel, Tin powder (주석가루), Acrylic',
+      size: '80.8 × 51.0 cm (25M)',
+      description: 'Balanced composition featuring sun, mountains, water, and cranes - comprehensive display of all longevity symbols',
+      color: '#457B9D',
+      image: '/images/artworks/artwork-new-08.webp'
+    },
+    {
+      id: 9,
+      title: 'Longevity Story II',
+      year: '2021',
+      medium: 'Canvas on Acrylic',
+      size: '90.9 × 65.1 cm (30P)',
+      description: 'Mountain landscape with vibrant sunset and village scene, showcasing expressive brushwork and bold color contrasts',
+      color: '#2A9D8F',
+      image: '/images/artworks/artwork-new-09.webp'
+    },
+    {
+      id: 10,
+      title: 'Autumn Scene of Mt. Naejang',
+      year: '2016',
+      medium: 'Canvas on Acrylic',
+      size: '72.7 × 60.6 cm (20F)',
+      description: 'Colorful autumn mountain landscape of famous Mt. Naejang with dynamic brushwork and rich seasonal palette',
+      color: '#F4A261',
+      image: '/images/artworks/artwork-new-10.webp'
+    },
+    {
+      id: 11,
+      title: 'Thawing of Mt. Geumgang',
+      year: '2011',
+      medium: 'Canvas on Acrylic',
+      size: '53.0 × 45.5 cm (10F)',
+      description: 'Iconic North Korean mountain with ice and snow melting, featuring dramatic rock formations and clouds',
+      color: '#457B9D',
+      image: '/images/artworks/artwork-new-11.webp'
+    },
+    {
+      id: 12,
+      title: 'New Year Sunrise Festival',
+      year: '2010',
+      medium: 'Canvas on Acrylic',
+      size: '53.0 × 45.5 cm (10F)',
+      description: 'Joyful celebration scene of people gathering for traditional New Year sunrise festival with cranes, mountains, and vibrant sky',
+      color: '#E63946',
+      image: '/images/artworks/artwork-new-12.webp'
     }
   ];
 
