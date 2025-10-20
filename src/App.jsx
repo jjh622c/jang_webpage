@@ -154,11 +154,11 @@ export default function JangInyoungPortfolio() {
     { name: 'Deer', meaning: 'Wealth' },
   ];
 
-  // About section images (placeholder - add actual images to /public/images/about/)
+  // About section images - Historical moments from artist's career
   const aboutImages = [
-    { url: '/images/about/photo-1.jpg', caption: 'Exhibition Opening' },
-    { url: '/images/about/photo-2.jpg', caption: 'Awards Ceremony' },
-    { url: '/images/about/photo-3.jpg', caption: 'Press Conference' },
+    { url: '/images/about/photo-1.jpg', caption: 'With President Kim Young-sam at Exhibition' },
+    { url: '/images/about/photo-2.jpg', caption: 'Interview with German YTN at Solo Exhibition' },
+    { url: '/images/about/photo-3.jpg', caption: '65th Busan Culture Award Certificate (2022)' },
   ];
 
   // News & Updates data
@@ -345,18 +345,21 @@ export default function JangInyoungPortfolio() {
           <h2 className="text-4xl font-bold mb-12 text-center">About the Artist</h2>
           <div className="space-y-8 text-lg leading-relaxed">
             <p className="text-gray-700">
-              Jang In-Young (b.1938) is a veteran Western-style painter and art critic based in Busan. As Professor Emeritus at Busan Women's University, he has dedicated his life to reinterpreting Korean traditional art identity in a contemporary context.
+              Jang In-Young (b.1938) is a distinguished Western-style painter and philosopher based in Busan. As Professor Emeritus at Busan Women's University (31 years of teaching), he has dedicated his life to reinterpreting Korean traditional "Ten Symbols of Longevity" in a contemporary context.
             </p>
             <p className="text-gray-700">
-              Through unique relief textures using mulberry paper, geometric compositions, and modern interpretations of traditional five colors, he presents new possibilities for longevity paintings.
+              Through his unique relief texture technique using tin powder and mulberry paper, combined with geometric compositions and modern interpretations of traditional five colors (Obangsaek), he has created a distinctive artistic language that bridges tradition and modernity.
             </p>
             <p className="text-gray-700">
-              Selected as a member of German Artists' Association BBK, his work is recognized worldwide including France and the United States for the value of Korean traditional art.
+              His achievements include receiving the Presidential Commendation (2003), the 65th Busan Metropolitan City Culture Award (2022), and 12th Samyang Culture Grand Prize (2015). As a member of the German Artists' Association (BBK), his work has been exhibited internationally in Germany, France, the United States, Japan, China, Turkey, Switzerland, and beyond, with his masterpiece permanently preserved at the International Culture Museum in Gifhorn, Germany.
+            </p>
+            <p className="text-gray-700">
+              Holder of a Ph.D. in Philosophy from Dong-A University, he has authored 6 books and 13 academic papers on art philosophy, while maintaining an active artistic career spanning over 58 years since 1966.
             </p>
           </div>
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-red-600">20+</div>
+              <div className="text-4xl font-bold text-red-600">23</div>
               <div className="text-sm text-gray-600">Solo Exhibitions</div>
             </div>
             <div className="space-y-2">
@@ -364,11 +367,11 @@ export default function JangInyoungPortfolio() {
               <div className="text-sm text-gray-600">Group Exhibitions</div>
             </div>
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-green-600">7+</div>
+              <div className="text-4xl font-bold text-green-600">10+</div>
               <div className="text-sm text-gray-600">Countries</div>
             </div>
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-yellow-600">85+</div>
+              <div className="text-4xl font-bold text-yellow-600">58+</div>
               <div className="text-sm text-gray-600">Years Active</div>
             </div>
           </div>
@@ -378,12 +381,13 @@ export default function JangInyoungPortfolio() {
             <h3 className="text-2xl font-bold mb-6 text-center">Gallery</h3>
             <div className="relative max-w-2xl mx-auto">
               <div className="aspect-video rounded-lg shadow-xl overflow-hidden bg-gray-100">
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <p className="text-lg mb-2">📸</p>
-                    <p className="text-sm">Add images to /public/images/about/</p>
-                    <p className="text-xs text-gray-500 mt-2">{aboutImages[aboutImageIndex].caption}</p>
-                  </div>
+                <img
+                  src={aboutImages[aboutImageIndex].url}
+                  alt={aboutImages[aboutImageIndex].caption}
+                  className="w-full h-full object-contain bg-gray-900"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                  <p className="text-white text-sm text-center">{aboutImages[aboutImageIndex].caption}</p>
                 </div>
               </div>
 
